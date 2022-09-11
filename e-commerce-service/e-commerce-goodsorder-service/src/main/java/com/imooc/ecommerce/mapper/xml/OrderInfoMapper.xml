@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.ecommerce.mapper.OrderInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.mooc.meetingfilm.backend.common.source.entity.OrderInfo">
+        <id column="id" property="id" />
+        <result column="add_time" property="addTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="deleted_at" property="deletedAt" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="user_id" property="userId" />
+        <result column="order_sn" property="orderSn" />
+        <result column="pay_type" property="payType" />
+        <result column="status" property="status" />
+        <result column="trade_no" property="tradeNo" />
+        <result column="order_mount" property="orderMount" />
+        <result column="pay_time" property="payTime" />
+        <result column="address" property="address" />
+        <result column="signer_name" property="signerName" />
+        <result column="singer_mobile" property="singerMobile" />
+        <result column="post" property="post" />
+    </resultMap>
+</mapper>

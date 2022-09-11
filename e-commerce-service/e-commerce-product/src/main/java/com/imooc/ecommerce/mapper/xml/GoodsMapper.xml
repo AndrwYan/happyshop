@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.ecommerce.mapper.GoodsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.imooc.ecommerce.entity.Goods">
+        <id column="id" property="id"/>
+        <result column="add_time" property="addTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="deleted_at" property="deletedAt"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="brands_id" property="brandsId"/>
+        <result column="on_sale" property="onSale"/>
+        <result column="ship_free" property="shipFree"/>
+        <result column="is_new" property="isNew"/>
+        <result column="is_hot" property="isHot"/>
+        <result column="name" property="name"/>
+        <result column="goods_sn" property="goodsSn"/>
+        <result column="click_num" property="clickNum"/>
+        <result column="sold_num" property="soldNum"/>
+        <result column="fav_num" property="favNum"/>
+        <result column="market_price" property="marketPrice"/>
+        <result column="shop_price" property="shopPrice"/>
+        <result column="goods_brief" property="goodsBrief"/>
+        <result column="images" property="images"/>
+        <result column="desc_images" property="descImages"/>
+        <result column="goods_front_image" property="goodsFrontImage"/>
+    </resultMap>
+
+    <sql id="Base_SQL" >
+        select id from category where category.parent_category_id = #{topCategory}
+    </sql>
+
+    <select id="listGoods" parameterType="com.imooc.ecommerce.dto.GoodsFilterDTO" resultType="com.imooc.ecommerce.vo.GoodsListVO">
+
+        select
+            a.*,
+            b.id as categorId,
+            b.`name` as categoryName,
+            c.id as brandId,
+            c.logo,
+            c.`name` as brandName
+        from goods as a
+                 left join category as b on a.category_id
+                 left join brands as c on c.id = a.brands_id
+        <where>
+
+            <if test="isHot != null">
+                and a.is_hot = #{isHot}
+            </if>
+            <if test="isNew != null">
+                and a.is_new = #{isNew}
+            </if>
+            <if test="priceMin != null and priceMin != '' ">
+                and a.shop_price &gt;= #{priceMin}
+            </if>
+            <if test="priceMax != null and priceMax != ''">
+                and  a.shop_price &lt;= #{priceMax}
+            </if>
+            <if test="brand != null and brand != ''">
+                and a.brand_id = #{brand}
+            </if>
+
+            <if test="level != null and level == 1">
+                and a.category_id in (
+                select id from category where category.parent_category_id
+                in (
+                <include refid="Base_SQL" />
+                    )
+                )
+            </if>
+            <if test="level != null and level == 2">
+                and a.category_id in (
+                <include refid="Base_SQL" />
+                )
+            </if>
+            <if test="level != null and level == 3">
+                and a.category_id in (
+                select id from category where category.id = #{topCategory}
+                )
+            </if>
+        </where>
+    </select>
+</mapper>

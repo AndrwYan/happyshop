@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.andrew.meetingfilm.backend.common.mapper.EcommerceUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.andrew.meetingfilm.backend.common.entity.EcommerceUser">
+        <id column="id" property="id" />
+        <result column="add_time" property="addTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="deleted_at" property="deletedAt" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="mobile" property="mobile" />
+        <result column="password" property="password" />
+        <result column="nick_name" property="nickName" />
+        <result column="birthday" property="birthday" />
+        <result column="gender" property="gender" />
+        <result column="role" property="role" />
+    </resultMap>
+</mapper>

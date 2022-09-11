@@ -1,0 +1,10 @@
+### 获取用户列表
+POST http://127.0.0.1:9001/imooc/ecommerce-user-service/ecommerceUser/list
+Content-Type: application/json
+e-commerce-user: eyJhbGciOiJSUzI1NiJ9.eyJlLWNvbW1lcmNlLXVzZXIiOiJ7XCJpZFwiOjEsXCJ1c2VybmFtZVwiOlwicm9vdFwifSIsImp0aSI6Ijg4YmZhYzY1LWUzM2YtNDc3Zi05Y2Q2LTViMWU0NDhjNmUwNiIsImV4cCI6MTY1ODY3ODQwMH0.Z4cNVmGS6TjXpF8-kHDWnZL14mua8yWD9NTzNr1DI2sWxk-5D8mTw1RGOvr03mHYQD_dAtAexA2zFnB_fAeMebqju4V_a3iBeBRf_WCR1T_OsQaABB88k91coPiPEv_u6-HKWwMtZRmCmgS-5IrbMtuT29LhZv0dIleRmCrgeFMcmZNLcbRVvlqTdr2Vt461sbkKnNYBBXW5W2Sk2eTXapiwQ1UqqVnPOLXjs1N0C8TzordYqGQKo7iLXsHZqM-KqieGbmdsp7tI1ubYJ1gA0hrWo0S8FKK68Jyab4Y6VDvZ_VILLcfqXPJm_AnSkOI0XxAsKrwvEVHDo-JI-mL4Lw
+
+{
+    "pn": "1",
+    "pSize": "10"
+}
+

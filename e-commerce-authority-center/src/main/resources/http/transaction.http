@@ -1,0 +1,5 @@
+### 测试事务失效的场景
+GET http://127.0.0.1:7003/ecommerce-authority-center/transactional/test
+
+### 测试事务失效的场景之同一个类中的方法调用
+GET http://127.0.0.1:7003/ecommerce-authority-center/transactional/test-innner-call

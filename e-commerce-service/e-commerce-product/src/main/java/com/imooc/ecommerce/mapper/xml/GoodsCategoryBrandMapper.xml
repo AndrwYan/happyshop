@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.ecommerce.mapper.GoodsCategoryBrandMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.imooc.ecommerce.entity.GoodsCategoryBrand">
+        <id column="id" property="id"/>
+        <result column="add_time" property="addTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="deleted_at" property="deletedAt"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="brands_id" property="brandsId"/>
+    </resultMap>
+
+    <resultMap id="GoodsCategoryBrand" type="com.imooc.ecommerce.vo.GoodCategoryBrandVO" >
+        <id column="id" property="id"/>
+        <result column="brand_id" property="brandId"/>
+        <result column="brandName" property="brandName"/>
+        <result column="logo" property="logo"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="is_tab" property="isTab"/>
+        <result column="level" property="level"/>
+        <result column="categoryName" property="categoryName"/>
+    </resultMap>
+
+    <resultMap id="Brand" type="com.imooc.ecommerce.vo.BrandInfoVO" >
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="logo" property="logo"/>
+    </resultMap>
+
+    <select id="listGoodsCategory" resultMap="GoodsCategoryBrand" >
+        select a.id,
+               b.id as brand_id,
+               b.logo,
+               b.`name` as brandName ,
+               c.id as category_id,
+               c.is_tab,
+               c.`level`,
+               c.`name` as categoryName,
+               c.parent_category_id
+        from goods_category_brand as a
+        left join brands as b on a.brands_id = b.id
+        left join category as c on a.category_id = c.id
+    </select>
+
+    <select id="listBrandByCategory" parameterType="com.imooc.ecommerce.vo.CategoryInfoVO" resultMap="Brand">
+        select a.*
+        from brands as a
+                 left join goods_category_brand as b on a.id = b.brands_id
+                 left join category as c on c.id = b.category_id
+        <where>
+            <if test="id != null ">and c.category_id = #{id}</if>
+        </where>
+    </select>
+</mapper>
