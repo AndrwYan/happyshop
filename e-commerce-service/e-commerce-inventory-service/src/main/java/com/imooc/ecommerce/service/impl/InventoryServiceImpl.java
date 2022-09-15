@@ -3,14 +3,14 @@ package com.imooc.ecommerce.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.imooc.ecommerce.aop2.IsTryAgain;
-import com.imooc.ecommerce.dto.GoodsInvInfoDTO;
+import com.imooc.ecommerce.aop.IsTryAgain;
 import com.imooc.ecommerce.dto.SellDetailDTO;
 import com.imooc.ecommerce.dto.SellInfoDTO;
 import com.imooc.ecommerce.entity.Inventory;
 import com.imooc.ecommerce.entity.InventoryDeductionRecord;
 import com.imooc.ecommerce.exception.GoodsNotFoundException;
 import com.imooc.ecommerce.exception.TryAgainException;
+import com.imooc.ecommerce.goods.GoodsInvInfoDTO;
 import com.imooc.ecommerce.mapper.InventoryDeductionRecordMapper;
 import com.imooc.ecommerce.mapper.InventoryMapper;
 import com.imooc.ecommerce.service.InventoryInfoService;
@@ -69,7 +69,7 @@ public class InventoryServiceImpl extends ServiceImpl<InventoryMapper, Inventory
     @Override
     @Transactional(rollbackFor = TryAgainException.class)
     @IsTryAgain
-    public Object deductGoods(int goodsId,int number,String orderSn) throws TryAgainException {
+    public Object deductGoods(int goodsId,int number,String orderSn)  {
 
             //1.此处必须调用单独的事务方法
             Inventory inventoryInfo = inventoryInfoService.getInventoryInfo(goodsId);
@@ -95,7 +95,7 @@ public class InventoryServiceImpl extends ServiceImpl<InventoryMapper, Inventory
             Integer result = inventoryInfoService.updateStock(inventory1, updateWrapper);
 
             if (result > 0) {
-                //插入流水表,以便反查,幂等。
+                //插入流水表,以便反查,幂等
                 InventoryDeductionRecord inventoryDeductionRecord = new InventoryDeductionRecord();
                 inventoryDeductionRecord.setGoodsId(goodsId);
                 inventoryDeductionRecord.setNumber(number);

@@ -66,11 +66,32 @@ public class OrderInfoController {
         queryWrapper.eq("order_sn",orderStatusRequest.getOrderSn());
 
         OrderInfo one = orderInfoService.getOne(queryWrapper);
+
         if (one == null) {
             throw new RuntimeException("不存在订单编号为" + orderStatusRequest.getOrderSn() + "的商品");
         }
+
         one.setStatus(orderStatusRequest.getStatus());
         orderInfoService.saveOrUpdate(one,queryWrapper);
 
     }
+
+    /**
+     * @Description: 创建订单
+     * 		            1. 从购物车中获取到选中的商品
+     * 		            2. 商品的价格自己查询 - 访问商品服务 (跨微服务)
+     * 		            3. 库存的扣减 - 访问库存服务 (跨微服务)
+     * 		            4. 订单的基本信息表 - 订单的商品信息表
+     * 		            5. 从购物车中删除已购买的记录
+     * @Author: yfk
+     * @Date: 2022-9-11
+     * @param orderRequest:
+     * @return: com.imooc.ecommerce.dto.OrderInfoDTO
+     **/
+    @PostMapping("/createOrder")
+    public OrderInfoDTO createOrderInfo(@RequestBody OrderRequest orderRequest) {
+
+
+    }
+
 }

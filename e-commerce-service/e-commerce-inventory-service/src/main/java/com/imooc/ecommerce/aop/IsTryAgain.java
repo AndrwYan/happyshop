@@ -1,4 +1,4 @@
-package com.imooc.ecommerce.aop2;
+package com.imooc.ecommerce.aop;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

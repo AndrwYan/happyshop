@@ -27,7 +27,7 @@ public interface IGoodsService {
      * <h2>根据 TableId 查询简单商品信息</h2>
      * */
     List<SimpleGoodsInfo> getSimpleGoodsInfoByTableId(TableId tableId);
-
+    
     /**
      * <h2>扣减商品库存</h2>
      * */

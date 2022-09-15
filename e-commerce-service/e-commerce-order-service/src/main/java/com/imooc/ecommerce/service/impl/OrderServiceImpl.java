@@ -123,56 +123,60 @@ public class OrderServiceImpl implements IOrderService {
                         //stream流迭代
                         orderInfo.getOrderItems()
                                 .stream()
-                                .map(OrderInfo.OrderItem::toDeductGoodsInventory)//调用toDeductGoodsInventory的方法
+                                .map(OrderInfo.OrderItem::toDeductGoodsInventory)//toDeductGoodsInventory的方法
                                 .collect(Collectors.toList())
                 ).getData()
-        ) {
+        )
+        {
             throw new RuntimeException("deduct goods inventory failure");
         }
 
-//        // 4. 扣减用户账户余额
-//        // 4.1 获取商品信息, 计算总价格
-//        List<SimpleGoodsInfo> goodsInfos = notSecuredGoodsClient.getSimpleGoodsInfoByTableId(
-//                new TableId(
-//                        orderInfo.getOrderItems()
-//                                .stream()
-//                                .map(o -> new TableId.Id(o.getGoodsId()))
-//                        .collect(Collectors.toList())
-//                )
-//        ).getData();
-//        Map<Long, SimpleGoodsInfo> goodsId2GoodsInfo = goodsInfos.stream()
-//                .collect(Collectors.toMap(SimpleGoodsInfo::getId, Function.identity()));
-//        long balance = 0;
-//        for (OrderInfo.OrderItem orderItem : orderInfo.getOrderItems()) {
-//            balance += goodsId2GoodsInfo.get(orderItem.getGoodsId()).getPrice()
-//                    * orderItem.getCount();
-//        }
-//        assert balance > 0;
-//
-//        // 4.2 填写总价格, 扣减账户余额
-//        BalanceInfo balanceInfo = notSecuredBalanceClient.deductBalance(
-//                new BalanceInfo(AccessContext.getLoginUserInfo().getId(), balance)
-//        ).getData();
-//        if (null == balanceInfo) {
-//            throw new RuntimeException("deduct user balance failure");
-//        }
-//        log.info("deduct user balance: [{}], [{}]", newOrder.getId(),
-//                JSON.toJSONString(balanceInfo));
-//
-//        // 5. 发送订单物流消息 SpringCloud Stream + Kafka
-//        LogisticsMessage logisticsMessage = new LogisticsMessage(
-//                AccessContext.getLoginUserInfo().getId(),
-//                newOrder.getId(),
-//                orderInfo.getUserAddress(),
-//                null    // 没有备注信息
-//        );
-//        if (!logisticsSource.logisticsOutput().send(
-//                MessageBuilder.withPayload(JSON.toJSONString(logisticsMessage)).build()
-//        )) {
-//            throw new RuntimeException("send logistics message failure");
-//        }
-//        log.info("send create order message to kafka with stream: [{}]",
-//                JSON.toJSONString(logisticsMessage));
+        // 4. 扣减用户账户余额
+        // 4.1 获取商品信息, 计算总价格
+        List<SimpleGoodsInfo> goodsInfos = notSecuredGoodsClient.getSimpleGoodsInfoByTableId(
+                new TableId(
+                        orderInfo.getOrderItems()
+                                .stream()
+                                .map(o -> new TableId.Id(o.getGoodsId()))
+                        .collect(Collectors.toList())
+                )
+        ).getData();
+
+        Map<Long, SimpleGoodsInfo> goodsId2GoodsInfo = goodsInfos.stream()
+                .collect(Collectors.toMap(SimpleGoodsInfo::getId, Function.identity()));
+
+        long balance = 0;
+
+        for (OrderInfo.OrderItem orderItem : orderInfo.getOrderItems()) {
+            balance += goodsId2GoodsInfo.get(orderItem.getGoodsId()).getPrice()
+                    * orderItem.getCount();
+        }
+        assert balance > 0;
+
+        // 4.2 填写总价格, 扣减账户余额
+        BalanceInfo balanceInfo = notSecuredBalanceClient.deductBalance(
+                new BalanceInfo(AccessContext.getLoginUserInfo().getId(), balance)
+        ).getData();
+        if (null == balanceInfo) {
+            throw new RuntimeException("deduct user balance failure");
+        }
+        log.info("deduct user balance: [{}], [{}]", newOrder.getId(),
+                JSON.toJSONString(balanceInfo));
+
+        // 5. 发送订单物流消息 SpringCloud Stream + Kafka
+        LogisticsMessage logisticsMessage = new LogisticsMessage(
+                AccessContext.getLoginUserInfo().getId(),
+                newOrder.getId(),
+                orderInfo.getUserAddress(),
+                null    // 没有备注信息
+        );
+        if (!logisticsSource.logisticsOutput().send(
+                MessageBuilder.withPayload(JSON.toJSONString(logisticsMessage)).build()
+        )) {
+            throw new RuntimeException("send logistics message failure");
+        }
+        log.info("send create order message to kafka with stream: [{}]",
+                JSON.toJSONString(logisticsMessage));
 
         // 返回订单 id
         return new TableId(Collections.singletonList(new TableId.Id(newOrder.getId())));

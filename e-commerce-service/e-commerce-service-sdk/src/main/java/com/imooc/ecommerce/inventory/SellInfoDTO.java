@@ -1,12 +1,10 @@
-package com.imooc.ecommerce.dto;
-
+package com.imooc.ecommerce.inventory;
 
 import com.imooc.ecommerce.goods.GoodsInvInfoDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.List;
 
 /**

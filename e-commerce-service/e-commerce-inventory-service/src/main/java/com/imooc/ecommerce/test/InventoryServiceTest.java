@@ -1,7 +1,8 @@
 package com.imooc.ecommerce.test;
 
-import com.imooc.ecommerce.dto.GoodsInvInfoDTO;
+
 import com.imooc.ecommerce.dto.SellInfoDTO;
+import com.imooc.ecommerce.goods.GoodsInvInfoDTO;
 import com.imooc.ecommerce.service.InventoryService;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;

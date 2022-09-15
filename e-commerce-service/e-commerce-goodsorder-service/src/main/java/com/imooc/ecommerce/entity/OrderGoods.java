@@ -1,5 +1,6 @@
 package com.imooc.ecommerce.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 
@@ -54,7 +55,7 @@ public class OrderGoods extends Model<OrderGoods> {
     /**
      * 商品价格
      */
-    private Float goodsPrice;
+    private BigDecimal goodsPrice;
 
     /**
      * 购买的商品数量

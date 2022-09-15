@@ -6,7 +6,6 @@ import com.imooc.ecommerce.dto.OrderInfoDetailDTO;
 import com.imooc.ecommerce.entity.OrderInfo;
 import com.imooc.ecommerce.request.OrderFilterRequest;
 import com.imooc.ecommerce.request.OrderRequest;
-
 import java.util.List;
 
 /**
@@ -18,5 +17,7 @@ public interface IOrderInfoService extends IService<OrderInfo> {
     List<OrderInfoDTO> listOrderInfo(OrderFilterRequest orderFilterRequest);
 
     OrderInfoDetailDTO getOrderDetail(OrderRequest orderRequest);
+
+    OrderInfoDTO createOrderInfo(OrderRequest orderRequest);
 
 }
