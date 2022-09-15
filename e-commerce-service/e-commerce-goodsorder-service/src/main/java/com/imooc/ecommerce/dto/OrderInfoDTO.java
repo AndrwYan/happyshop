@@ -1,9 +1,10 @@
 package com.imooc.ecommerce.dto;
 
-
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
+@Data
 public class OrderInfoDTO {
 
     private Integer id;

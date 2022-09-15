@@ -1,7 +1,10 @@
 package com.imooc.ecommerce.entity;
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.annotation.TableId;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 import lombok.Data;
@@ -48,7 +51,10 @@ public class OrderInfo extends Model<OrderInfo> {
      */
     private String tradeNo;
 
-    private Float orderMount;
+    /**
+     * 订单总金额
+     */
+    private BigDecimal orderMount;
 
     private LocalDateTime payTime;
 

@@ -1,11 +1,11 @@
 package com.imooc.ecommerce.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.imooc.ecommerce.dto.GoodsInvInfoDTO;
 import com.imooc.ecommerce.dto.SellInfoDTO;
 import com.imooc.ecommerce.entity.Inventory;
 import com.imooc.ecommerce.exception.GoodsNotFoundException;
-import com.imooc.ecommerce.exception.TryAgainException;
+
+import com.imooc.ecommerce.goods.GoodsInvInfoDTO;
 import com.imooc.ecommerce.service.InventoryService;
 import com.imooc.ecommerce.vo.GoodsInvInfoVO;
 import org.springframework.validation.annotation.Validated;
@@ -64,21 +64,18 @@ public class InventoryController {
      * @return: void
      **/
     @PutMapping(value = "/deductgoods")
-    public void deductInventory(@RequestBody SellInfoDTO sellInfoDTO){
+    public Boolean deductInventory(@RequestBody SellInfoDTO sellInfoDTO){
 
         String orderSn = sellInfoDTO.getOrderSn();
         List<GoodsInvInfoDTO> goodsInvInfoDTOS = sellInfoDTO.getGoodsInvInfoDTOS();
 
         goodsInvInfoDTOS.stream().map(
                 vo -> {
-                    try {
-                        inventoryService.deductGoods(vo.getGoodsId(), vo.getNumber(), orderSn);
-                    } catch (TryAgainException e) {
-                        e.printStackTrace();
-                    }
+                    inventoryService.deductGoods(vo.getGoodsId(), vo.getNumber(), orderSn);
                     return null;
                 }
         );
 
+        return true;
     }
 }

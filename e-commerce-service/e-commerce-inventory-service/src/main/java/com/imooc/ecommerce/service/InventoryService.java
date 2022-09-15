@@ -26,7 +26,7 @@ public interface InventoryService extends IService<Inventory> {
      * @Date:  2022-07-22
      * @return: void
      **/
-    Object deductGoods(int goodsId,int num,String orderSn) throws TryAgainException;
+    Object deductGoods(int goodsId,int num,String orderSn) ;
 
     /**
      * @Description: 归还库存

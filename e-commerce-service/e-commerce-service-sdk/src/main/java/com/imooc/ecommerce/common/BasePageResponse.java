@@ -1,6 +1,7 @@
-package com.imooc.ecommerce.vo;
+package com.imooc.ecommerce.common;
 
 import lombok.Data;
+
 import java.util.List;
 
 /**

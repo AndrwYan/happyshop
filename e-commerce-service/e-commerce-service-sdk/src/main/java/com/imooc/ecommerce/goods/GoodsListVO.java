@@ -1,26 +1,13 @@
-package com.imooc.ecommerce.entity;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.baomidou.mybatisplus.annotation.TableId;
-import lombok.AllArgsConstructor;
+package com.imooc.ecommerce.goods;
+
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-/**
- * @author yfk
- * @since 2022-05-28
- */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class Goods extends Model<Goods> {
+public class GoodsListVO {
 
-    private static final long serialVersionUID = 1L;
-
-    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     private LocalDateTime addTime;
@@ -65,4 +52,13 @@ public class Goods extends Model<Goods> {
 
     private String goodsFrontImage;
 
+    private String category_id;
+
+    private String categoryName;
+
+    private Integer brandId;
+
+    private String logo;
+
+    private String brandName;
 }

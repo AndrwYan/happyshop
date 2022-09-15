@@ -1,4 +1,4 @@
-package com.imooc.ecommerce.aop2;
+package com.imooc.ecommerce.aop;
 
 import com.imooc.ecommerce.exception.GoodsNotFoundException;
 import com.imooc.ecommerce.exception.TryAgainException;

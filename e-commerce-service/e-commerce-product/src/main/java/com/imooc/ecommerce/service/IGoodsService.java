@@ -1,8 +1,9 @@
 package com.imooc.ecommerce.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.imooc.ecommerce.common.BasePageResponse;
 import com.imooc.ecommerce.entity.Goods;
-import com.imooc.ecommerce.vo.BasePageResponse;
+
 import com.imooc.ecommerce.vo.GoodsFilterVO;
 import com.imooc.ecommerce.vo.GoodsListVO;
 import java.util.List;

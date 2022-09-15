@@ -1,5 +1,6 @@
 package com.imooc.ecommerce.controller;
 
+import com.imooc.ecommerce.annotation.IgnoreResponseAdvice;
 import com.imooc.ecommerce.common.TableId;
 import com.imooc.ecommerce.goods.DeductGoodsInventory;
 import com.imooc.ecommerce.goods.GoodsInfo;

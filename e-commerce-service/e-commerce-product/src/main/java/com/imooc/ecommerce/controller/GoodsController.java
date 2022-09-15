@@ -1,6 +1,7 @@
 package com.imooc.ecommerce.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.imooc.ecommerce.common.BasePageResponse;
 import com.imooc.ecommerce.entity.Brands;
 import com.imooc.ecommerce.entity.Category;
 import com.imooc.ecommerce.entity.Goods;
@@ -14,8 +15,8 @@ import com.imooc.ecommerce.vo.*;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Description: 1.关键词搜索
@@ -25,9 +26,7 @@ import java.util.List;
  *               5.查询新品
  *               6.商品的增删改没实现
  * @Author: yfk
- * @Date:
- * @param
- * @return: null
+ * @Date: 2022-8-11
  **/
 @RestController
 @RequestMapping("/goods")
@@ -54,30 +53,30 @@ public class GoodsController {
         BasePageResponse<GoodsListVO> goodsList = iGoodsService.getGoodsList(goodsFilterVO);
         return goodsList;
     }
+
     /**
      * @Description: 现在用户提交订单有多个商品，你得批量查询商品的信息吧
      * @Author: yfk
-     * @Date:
+     * @Date: 2022-9-11
      * @param ids:
      * @return: com.imooc.ecommerce.vo.BasePageResponse<com.imooc.ecommerce.vo.GoodsListVO>
      **/
     @GetMapping(value = "/batchgoods")
-    public BasePageResponse<GoodsListVO> batchGoodsList(List<String> ids) {
-        //通过用户提交的多个订单id进行批量查询
+    public List<GoodsListVO> batchGoodsList(List<String> ids) {
+
+        //1.通过用户提交的多个订单id进行批量查询
         List<Goods> goods = (List<Goods>) iGoodsService.listByIds(ids);
-        ArrayList<GoodsListVO> goodsListVOS = new ArrayList<>();
-        //迭代List集合,转换成VO
-        goods.forEach(
+
+        //2.迭代List集合,转换成VO
+        final List<GoodsListVO> collect = goods.stream().map(
                 vo -> {
                     GoodsListVO goodsListVO = new GoodsListVO();
-                    BeanUtil.copyProperties(vo,goodsListVO);
-                    goodsListVOS.add(goodsListVO);
+                    BeanUtil.copyProperties(vo, goodsListVO);
+                    return goodsListVO;
                 }
-        );
-        BasePageResponse<GoodsListVO> objectBasePageResponse = new BasePageResponse<>();
-        objectBasePageResponse.setTotalNum(goodsListVOS.size());
-        objectBasePageResponse.setContentList(goodsListVOS);
-        return objectBasePageResponse;
+        ).collect(Collectors.toList());
+
+        return collect;
     }
 
     /**

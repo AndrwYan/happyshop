@@ -1,4 +1,4 @@
-package com.imooc.ecommerce.dto;
+package com.imooc.ecommerce.goods;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;

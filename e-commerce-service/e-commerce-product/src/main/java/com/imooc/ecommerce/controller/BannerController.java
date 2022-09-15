@@ -1,12 +1,12 @@
 package com.imooc.ecommerce.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.imooc.ecommerce.common.BasePageResponse;
 import com.imooc.ecommerce.dto.BannerDTO;
 import com.imooc.ecommerce.entity.Banner;
 import com.imooc.ecommerce.exception.BannerNotFoundException;
 import com.imooc.ecommerce.service.IBannerService;
 import com.imooc.ecommerce.vo.BannerVO;
-import com.imooc.ecommerce.vo.BasePageResponse;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
