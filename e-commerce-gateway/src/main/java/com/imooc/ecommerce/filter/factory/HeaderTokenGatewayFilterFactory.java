@@ -5,7 +5,6 @@ import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.stereotype.Component;
 
-
 /**
  * @Description: 创建HeaderTokenGatewayFilterFactory工厂对象
  * @Author: yfk

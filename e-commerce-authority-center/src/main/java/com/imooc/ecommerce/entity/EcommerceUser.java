@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -34,24 +35,42 @@ public class EcommerceUser implements Serializable {
     private Long id;
 
     /** 用户名 */
-    @Column(name = "username", nullable = false)
-    private String username;
+    @Column(name = "nick_name")
+    private String nickName;
+
+    @Column(name = "mobile", nullable = false)
+    private String mobile;
 
     /** MD5 密码 */
     @Column(name = "password", nullable = false)
     private String password;
 
-    /** 额外的信息, json 字符串存储 */
-    @Column(name = "extra_info", nullable = false)
-    private String extraInfo;
-
     /** 创建时间 */
     @CreatedDate
-    @Column(name = "create_time", nullable = false)
-    private Date createTime;
+    @Column(name = "add_time")
+    private LocalDateTime addTime;
 
     /** 更新时间 */
     @LastModifiedDate
-    @Column(name = "update_time", nullable = false)
-    private Date updateTime;
+    @Column(name = "update_time")
+    private LocalDateTime updateTime;
+
+    /**  */
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
+    private Boolean isDeleted;
+
+    private LocalDateTime birthday;
+
+    /**
+     * male表示男的
+     */
+    private String gender;
+
+    /**
+     * 1表示普通用户，2表示管理员
+     */
+    private Integer role;
 }

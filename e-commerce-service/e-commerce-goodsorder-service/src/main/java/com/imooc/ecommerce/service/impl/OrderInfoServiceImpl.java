@@ -150,10 +150,12 @@ public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo
         // 1.1 将商品的唯一id和数量组装成Map方便计算下面的逻辑计算商品总价
         Map<Integer, Integer> map = orderShoppingCarts.stream()
                 .collect(Collectors.toMap(OrderShoppingCart::getGoods, OrderShoppingCart::getNums));
+
         // 1.2 得到购物车中的商品id集合
         List<Integer> ids = orderShoppingCarts.stream()
                 .map(OrderShoppingCart::getGoods)
                 .collect(Collectors.toList());
+
         // 2. 商品的价格自己查询 - 访问商品服务 (跨微服务)
         List<GoodsListVO> simpleGoodsInfoByTableId = goodsInfoClient.getSimpleGoodsInfoByTableId(ids);
         List<OrderGoods> orderGoodsList = new ArrayList<>();

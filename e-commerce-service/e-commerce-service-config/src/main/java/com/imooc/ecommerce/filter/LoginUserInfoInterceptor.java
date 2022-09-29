@@ -79,7 +79,7 @@ public class LoginUserInfoInterceptor implements HandlerInterceptor {
         return StringUtils.containsAny(
                 url,
                 "springfox", "swagger", "v2",
-                "webjars", "doc.html"
+                "webjars", "doc.html","createuser"
         );
     }
 }

@@ -26,6 +26,7 @@
             <artifactId>e-commerce-mvc-config</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
         <!-- 实现微服务通信 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>

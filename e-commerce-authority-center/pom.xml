@@ -63,6 +63,13 @@
             <artifactId>screw-core</artifactId>
             <version>1.0.3</version>
         </dependency>
+
+        <!-- 实现微服务通信 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
     </dependencies>
 
     <!--

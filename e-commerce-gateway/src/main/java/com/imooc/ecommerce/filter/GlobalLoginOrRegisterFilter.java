@@ -8,7 +8,6 @@ import com.imooc.ecommerce.vo.JwtToken;
 import com.imooc.ecommerce.vo.LoginUserInfo;
 import com.imooc.ecommerce.vo.UsernameAndPassword;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -62,10 +61,11 @@ public class GlobalLoginOrRegisterFilter implements GlobalFilter, Ordered {
 
         // 1. 如果是登录
         if (request.getURI().getPath().contains(GatewayConstant.LOGIN_URI)) {
-            // 去授权中心拿 token
+            // 去授权中心服务拿token
             String token = getTokenFromAuthorityCenter(
                     request, GatewayConstant.AUTHORITY_CENTER_TOKEN_URL_FORMAT
             );
+
             // header 中不能设置 null
             response.getHeaders().add(
                     CommonConstant.JWT_USER_INFO_KEY,
@@ -77,11 +77,13 @@ public class GlobalLoginOrRegisterFilter implements GlobalFilter, Ordered {
 
         // 2. 如果是注册
         if (request.getURI().getPath().contains(GatewayConstant.REGISTER_URI)) {
+
             // 去授权中心拿 token: 先创建用户, 再返回 Token
             String token = getTokenFromAuthorityCenter(
                     request,
                     GatewayConstant.AUTHORITY_CENTER_REGISTER_URL_FORMAT
             );
+
             response.getHeaders().add(
                     CommonConstant.JWT_USER_INFO_KEY,
                     null == token ? "null" : token
@@ -125,21 +127,28 @@ public class GlobalLoginOrRegisterFilter implements GlobalFilter, Ordered {
         ServiceInstance serviceInstance = loadBalancerClient.choose(
                 CommonConstant.AUTHORITY_CENTER_SERVICE_ID
         );
+
         log.info("Nacos Client Info: [{}], [{}], [{}]",
                 serviceInstance.getServiceId(), serviceInstance.getInstanceId(),
                 JSON.toJSONString(serviceInstance.getMetadata()));
 
+        //获取服务的地址和端口号
         String requestUrl = String.format(
                 uriFormat, serviceInstance.getHost(), serviceInstance.getPort()
         );
+
+        //反序列化
         UsernameAndPassword requestBody = JSON.parseObject(
                 parseBodyFromRequest(request), UsernameAndPassword.class
         );
+
         log.info("login request url and body: [{}], [{}]", requestUrl,
                 JSON.toJSONString(requestBody));
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+
+        //发送http请求到---鉴权中心服务
         JwtToken token = restTemplate.postForObject(
                 requestUrl,
                 new HttpEntity<>(JSON.toJSONString(requestBody), headers),
@@ -165,7 +174,7 @@ public class GlobalLoginOrRegisterFilter implements GlobalFilter, Ordered {
         // 订阅缓冲区去消费请求体中的数据
         body.subscribe(buffer -> {
             CharBuffer charBuffer = StandardCharsets.UTF_8.decode(buffer.asByteBuffer());
-            // 一定要使用 DataBufferUtils.release 释放掉, 否则, 会出现内存泄露
+            // 一定要使用 DataBufferUtils.release 释放掉, 否则, 会出现内存泄露(所谓内存泄露就是一些对象无法被垃圾收集器回收)
             DataBufferUtils.release(buffer);
             bodyRef.set(charBuffer.toString());
         });

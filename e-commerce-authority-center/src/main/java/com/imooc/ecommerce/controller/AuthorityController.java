@@ -26,7 +26,7 @@ public class AuthorityController {
     }
 
     /**
-     * <h2>从授权中心获取 Token (其实就是登录功能), 且返回信息中没有统一响应的包装</h2>
+     * <h2>从授权中心获取 Token (其实就是登录功能),且返回信息中没有统一响应的包装</h2>
      * */
     @IgnoreResponseAdvice
     @PostMapping("/token")
@@ -36,7 +36,7 @@ public class AuthorityController {
         log.info("request to get token with param: [{}]",
                 JSON.toJSONString(usernameAndPassword));
         return new JwtToken(
-                ijwtService.generateToken(usernameAndPassword.getUsername(),
+                ijwtService.generateToken(usernameAndPassword.getNickName(),
                                           usernameAndPassword.getPassword()));
     }
 
@@ -51,9 +51,8 @@ public class AuthorityController {
         log.info("register user with param: [{}]", JSON.toJSONString(
                 usernameAndPassword
         ));
-        return new JwtToken(ijwtService.registerUserAndGenerateToken(
-                usernameAndPassword
-        ));
+
+        return new JwtToken(ijwtService.registerUserAndGenerateToken(usernameAndPassword));
     }
 
     
