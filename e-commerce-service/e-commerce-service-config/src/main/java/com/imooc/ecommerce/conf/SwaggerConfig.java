@@ -25,7 +25,6 @@ public class SwaggerConfig {
      * */
     @Bean
     public Docket docket() {
-
         return new Docket(DocumentationType.SWAGGER_2)
                 // 展示在 Swagger 页面上的自定义工程描述信息
                 .apiInfo(apiInfo())
@@ -41,7 +40,7 @@ public class SwaggerConfig {
      * <h2>Swagger 的描述信息</h2>
      * */
     public ApiInfo apiInfo() {
-
+        //Builder建造者模式
         return new ApiInfoBuilder()
                 .title("micro-service")
                 .description("e-commerce-springcloud-service")

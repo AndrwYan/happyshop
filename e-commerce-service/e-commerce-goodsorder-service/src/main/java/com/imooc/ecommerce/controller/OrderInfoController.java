@@ -9,6 +9,9 @@ import com.imooc.ecommerce.request.OrderRequest;
 import com.imooc.ecommerce.request.OrderStatusRequest;
 import com.imooc.ecommerce.service.IOrderInfoService;
 import com.imooc.ecommerce.vo.CommonListResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.apache.kafka.common.config.ConfigDef;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,6 +21,7 @@ import java.util.List;
  * @author yfk
  * @since 2022-08-14
  */
+@Api
 @RestController
 @RequestMapping("/orderInfo")
 public class OrderInfoController {
@@ -32,6 +36,7 @@ public class OrderInfoController {
      * @param orderFilterRequest:
      * @return: com.imooc.ecommerce.vo.CommonListResponse
      **/
+    @ApiOperation(value = "获取订单列表")
     @GetMapping("/orderList")
     public CommonListResponse getOrderList(OrderFilterRequest orderFilterRequest){
         List<OrderInfoDTO> orderInfoDTOS = orderInfoService.listOrderInfo(orderFilterRequest);
@@ -45,6 +50,7 @@ public class OrderInfoController {
      * @param orderRequest:
      * @return: com.imooc.ecommerce.vo.CommonListResponse
      **/
+    @ApiOperation(value = "获取订单详情")
     @GetMapping("/orderDetail")
     public OrderInfoDetailDTO getOrderDetail(OrderRequest orderRequest) {
 
@@ -59,6 +65,7 @@ public class OrderInfoController {
      * @param orderStatusRequest:
      * @return: void
      **/
+    @ApiOperation(value = "更新订单状态")
     @PostMapping("/updateOrder")
     public void updateOrderInfo(@RequestBody OrderStatusRequest orderStatusRequest) {
 
@@ -88,10 +95,10 @@ public class OrderInfoController {
      * @param orderRequest:
      * @return: com.imooc.ecommerce.dto.OrderInfoDTO
      **/
-    @PostMapping("/createOrder")
-    public OrderInfoDTO createOrderInfo(@RequestBody OrderRequest orderRequest) {
-
-
-    }
+//    @PostMapping("/createOrder")
+//    public OrderInfoDTO createOrderInfo(@RequestBody OrderRequest orderRequest) {
+//
+//
+//    }
 
 }

@@ -33,9 +33,8 @@ public class EcommerceUserTest {
     public void createUserRecord() {
 
         EcommerceUser ecommerceUser = new EcommerceUser();
-        ecommerceUser.setUsername("Im000000");
+        ecommerceUser.setNickName("Im000000");
         ecommerceUser.setPassword(MD5.create().digestHex("12345678"));
-        ecommerceUser.setExtraInfo("{}");
         log.info("save user: [{}]",
                 JSON.toJSON(ecommerceUserDao.save(ecommerceUser)));
     }
@@ -47,9 +46,8 @@ public class EcommerceUserTest {
     public void createUserRecordA() {
 
         EcommerceUser ecommerceUser = new EcommerceUser();
-        ecommerceUser.setUsername("Im000000");
+        ecommerceUser.setNickName("Im000000");
         ecommerceUser.setPassword(MD5.create().digestHex("12345678"));
-        ecommerceUser.setExtraInfo("{}");
         log.info("save user: [{}]",
                 JSON.toJSON(ecommerceUserDao.save(ecommerceUser)));
     }

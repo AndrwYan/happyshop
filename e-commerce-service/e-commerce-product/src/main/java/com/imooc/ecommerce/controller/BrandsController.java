@@ -6,6 +6,8 @@ import com.imooc.ecommerce.param.BrandFilterRequest;
 import com.imooc.ecommerce.service.IBrandsService;
 import com.imooc.ecommerce.vo.BrandInfoVO;
 import com.imooc.ecommerce.vo.BrandListVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 
@@ -13,6 +15,7 @@ import javax.annotation.Resource;
  * @author yfk
  * @since 2022-05-28
  */
+@Api
 @RestController
 @RequestMapping("/brands")
 public class BrandsController {
@@ -25,6 +28,7 @@ public class BrandsController {
      * @Date: 2022-05-28
      * @return: com.imooc.ecommerce.vo.BrandListVO
      **/
+    @ApiOperation(value = "获取品牌轮播图")
     @PostMapping(value = "/lsitbrand")
     public BrandListVO getBrandList(@RequestBody BrandFilterRequest brandFilterRequest) {
 
@@ -39,6 +43,7 @@ public class BrandsController {
      * @Date: 2022-05-28
      * @return: com.imooc.ecommerce.vo.BrandListVO
      **/
+    @ApiOperation(value = "新建品牌信息")
     @PostMapping(value = "/create")
     public BrandInfoVO createBrand(@RequestBody BrandInfoVO brandInfoVO) {
         Brands brands = new Brands();
@@ -53,6 +58,7 @@ public class BrandsController {
      * @Date: 2022-05-28
      * @return: com.imooc.ecommerce.vo.BrandListVO
      **/
+    @ApiOperation(value = "更新品牌信息")
     @PostMapping(value = "/update")
     public void updateBrand(@RequestBody BrandInfoVO brandInfoVO) {
         Brands object = iBrandsService.getById(brandInfoVO.getId());
@@ -72,6 +78,7 @@ public class BrandsController {
      * @Date: 2022-05-28
      * @return: com.imooc.ecommerce.vo.BrandListVO
      **/
+    @ApiOperation(value = "删除品牌信息")
     @DeleteMapping(value = "/{brandId}")
     public boolean deleteBrand(@PathVariable int brandId) {
         Brands brands = new Brands();

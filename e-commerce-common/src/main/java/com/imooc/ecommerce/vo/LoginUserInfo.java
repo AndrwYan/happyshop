@@ -16,5 +16,5 @@ public class LoginUserInfo {
     private Long id;
 
     /** 用户名 */
-    private String username;
+    private String nickname;
 }

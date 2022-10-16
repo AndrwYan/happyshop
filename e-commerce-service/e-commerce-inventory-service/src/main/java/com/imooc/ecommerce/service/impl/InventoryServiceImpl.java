@@ -95,7 +95,7 @@ public class InventoryServiceImpl extends ServiceImpl<InventoryMapper, Inventory
             Integer result = inventoryInfoService.updateStock(inventory1, updateWrapper);
 
             if (result > 0) {
-                //插入流水表,以便反查,幂等
+                //插入流水表,以便反查,保证幂等性。
                 InventoryDeductionRecord inventoryDeductionRecord = new InventoryDeductionRecord();
                 inventoryDeductionRecord.setGoodsId(goodsId);
                 inventoryDeductionRecord.setNumber(number);

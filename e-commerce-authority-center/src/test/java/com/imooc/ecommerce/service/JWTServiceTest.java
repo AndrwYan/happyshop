@@ -2,6 +2,7 @@ package com.imooc.ecommerce.service;
 
 import com.alibaba.fastjson.JSON;
 import com.imooc.ecommerce.util.TokenParseUtil;
+import com.imooc.ecommerce.vo.LoginOrRegisterResponse;
 import com.imooc.ecommerce.vo.LoginUserInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -24,13 +25,13 @@ public class JWTServiceTest {
     @Test
     public void testGenerateAndParseToken() throws Exception {
 
-        String jwtToken = ijwtService.generateToken(
+        LoginOrRegisterResponse jwtToken = ijwtService.generateToken(
                 "Qinyi@imooc.com",
                 "25d55ad283aa400af464c76d713c07ad"
         );
         log.info("jwt token is: [{}]", jwtToken);
 
-        LoginUserInfo userInfo = TokenParseUtil.parseUserInfoFromToken(jwtToken);
+        LoginUserInfo userInfo = TokenParseUtil.parseUserInfoFromToken(jwtToken.toString());
         log.info("parse token: [{}]", JSON.toJSONString(userInfo));
     }
 }

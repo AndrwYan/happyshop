@@ -8,6 +8,8 @@ import com.imooc.ecommerce.exception.GoodsNotFoundException;
 import com.imooc.ecommerce.goods.GoodsInvInfoDTO;
 import com.imooc.ecommerce.service.InventoryService;
 import com.imooc.ecommerce.vo.GoodsInvInfoVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
@@ -17,6 +19,7 @@ import java.util.List;
  * @author yfk
  * @since 2022-07-02
  */
+@Api
 @RestController
 @RequestMapping("/inventory")
 public class InventoryController {
@@ -30,6 +33,7 @@ public class InventoryController {
      * @Date:  2022-7-2
      * @return: void
      **/
+    @ApiOperation(value = "设置商品的库存")
     @PostMapping ("/setinventory")
     public void setInv(@RequestBody @Validated GoodsInvInfoVO goodsInvInfoVO){
 
@@ -44,6 +48,7 @@ public class InventoryController {
      * @param goodsInvInfoVO:
      * @return: com.imooc.ecommerce.vo.GoodsInvInfoVO
      **/
+    @ApiOperation(value = "得到库存详情")
     @GetMapping ("/getinventory")
     public GoodsInvInfoVO getInv(@RequestBody @Validated GoodsInvInfoVO goodsInvInfoVO) {
 
@@ -63,6 +68,7 @@ public class InventoryController {
      * @param sellInfoDTO:
      * @return: void
      **/
+    @ApiOperation(value = "扣减库存接口")
     @PutMapping(value = "/deductgoods")
     public Boolean deductInventory(@RequestBody SellInfoDTO sellInfoDTO){
 
@@ -75,7 +81,6 @@ public class InventoryController {
                     return null;
                 }
         );
-
         return true;
     }
 }

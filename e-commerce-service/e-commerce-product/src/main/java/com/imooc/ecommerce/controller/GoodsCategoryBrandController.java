@@ -10,6 +10,8 @@ import com.imooc.ecommerce.service.IBrandsService;
 import com.imooc.ecommerce.service.ICategoryService;
 import com.imooc.ecommerce.service.IGoodsCategoryBrandService;
 import com.imooc.ecommerce.vo.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +24,7 @@ import javax.annotation.Resource;
  * @author yfk
  * @since 2022-05-28
  */
+@Api
 @RestController
 @RequestMapping("/goodsCategoryBrand")
 public class GoodsCategoryBrandController {
@@ -42,6 +45,7 @@ public class GoodsCategoryBrandController {
      * @param brandFilterRequest:
      * @return: com.imooc.ecommerce.vo.GoodsCategoryBrandListVO
      **/
+    @ApiOperation(value = "返回商品分类品牌信息列表")
     @PostMapping(value = "/list")
     public GoodsCategoryBrandListVO listGoodsCategoryBrandListVO(@RequestBody @Validated BrandFilterRequest brandFilterRequest) {
         GoodsCategoryBrandListVO goodsCategoryBrand = iGoodsCategoryBrandService.getGoodsCategoryBrand(brandFilterRequest);
@@ -55,6 +59,7 @@ public class GoodsCategoryBrandController {
      * @param categoryInfoVO:
      * @return: java.util.List<com.imooc.ecommerce.vo.BrandInfoVO>
      **/
+    @ApiOperation(value = "通过商品分类信息查询该分类下的所有品牌")
     @PostMapping(value = "/listallbrand")
     public BrandListVO getCategoryBrandList(@RequestBody CategoryInfoVO categoryInfoVO) {
         BrandListVO brandListVO = iGoodsCategoryBrandService.GetCategoryBrandList(categoryInfoVO);
@@ -68,6 +73,7 @@ public class GoodsCategoryBrandController {
      * @param goodsCategoryBrandVO:
      * @return: void
      **/
+    @ApiOperation(value = "创建商品分类品牌记录")
     @PostMapping(value = "/createbrand")
     public void createCategoryBrand(@RequestBody @Validated GoodsCategoryBrandVO goodsCategoryBrandVO) {
 
@@ -91,6 +97,7 @@ public class GoodsCategoryBrandController {
      * @param goodsCategoryBrandVO:
      * @return: void
      **/
+    @ApiOperation("删除删除分类品牌信息")
     @PostMapping(value = "/delete")
     public void deleteCategoryBrand(@RequestBody @Validated GoodsCategoryBrandVO goodsCategoryBrandVO) {
         if (null == iGoodsCategoryBrandService.getById(goodsCategoryBrandVO.getId())) {
@@ -106,6 +113,7 @@ public class GoodsCategoryBrandController {
      * @param goodsCategoryBrandVO:
      * @return: void
      **/
+    @ApiOperation(value = "修改品牌信息")
     @PostMapping(value = "/update")
     public void updateCategoryBrand(@RequestBody @Validated GoodsCategoryBrandVO goodsCategoryBrandVO) {
 

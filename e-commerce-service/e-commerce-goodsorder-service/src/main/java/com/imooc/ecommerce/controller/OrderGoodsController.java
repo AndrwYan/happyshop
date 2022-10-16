@@ -8,6 +8,8 @@ import com.imooc.ecommerce.request.UserInfoRequest;
 import com.imooc.ecommerce.service.IOrderShoppingCartService;
 import com.imooc.ecommerce.vo.CommonListResponse;
 import com.imooc.ecommerce.vo.CommonResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +19,7 @@ import javax.annotation.Resource;
  * @author yfk
  * @since 2022-08-14
  */
+@Api
 @RestController
 @RequestMapping("/orderGoods")
 public class OrderGoodsController {
@@ -30,6 +33,7 @@ public class OrderGoodsController {
      * @Date: 2022-08-209
      * @return: com.imooc.ecommerce.vo.CommonResponse
      **/
+    @ApiOperation(value = "获取用户的购物车列表")
     @GetMapping("/allCartItem")
     public CommonResponse getCartItemList(@RequestBody @Validated UserInfoRequest userInfoRequest) {
 

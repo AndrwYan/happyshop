@@ -21,7 +21,7 @@ import java.util.concurrent.Executor;
  * */
 @Slf4j
 @Component
-@DependsOn({"gatewayConfig"})
+@DependsOn({"gatewayConfig"})//
 public class DynamicRouteServiceImplByNacos {
 
     /** Nacos 配置服务 */
@@ -70,7 +70,7 @@ public class DynamicRouteServiceImplByNacos {
             log.error("gateway route init has some error: [{}]", ex.getMessage(), ex);
         }
 
-        // 设置监听器
+        // 设置监听器:
         dynamicRouteByNacosListener(GatewayConfig.NACOS_ROUTE_DATA_ID,
                 GatewayConfig.NACOS_ROUTE_GROUP);
     }
@@ -85,6 +85,7 @@ public class DynamicRouteServiceImplByNacos {
             properties.setProperty("serverAddr", GatewayConfig.NACOS_SERVER_ADDR);
             properties.setProperty("namespace", GatewayConfig.NACOS_NAMESPACE);
             return configService = NacosFactory.createConfigService(properties);
+
         } catch (Exception ex) {
             log.error("init gateway nacos config error: [{}]", ex.getMessage(), ex);
             return null;
