@@ -6,14 +6,9 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
-import java.io.Serializable;
+
 /**
- * <p>
- * 
- * </p>
- *
  * @author yfk
  * @since 2022-05-21
  */
@@ -62,6 +57,5 @@ public class EcommerceUser extends Model<EcommerceUser> {
      * 1表示普通用户，2表示管理员
      */
     private Integer role;
-
 
 }

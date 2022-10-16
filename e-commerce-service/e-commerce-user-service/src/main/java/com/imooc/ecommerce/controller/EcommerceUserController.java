@@ -3,6 +3,7 @@ package com.imooc.ecommerce.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.imooc.ecommerce.annotation.IgnoreResponseAdvice;
 import com.imooc.ecommerce.dto.CreateUserDTO;
 import com.imooc.ecommerce.entity.EcommerceUser;
 import com.imooc.ecommerce.service.IEcommerceUserService;
@@ -13,8 +14,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import java.io.ObjectStreamField;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +41,7 @@ public class EcommerceUserController {
      * @param pageInfo: 分页信息
      * @return: com.imooc.ecommerce.vo.BasePageResponse
      **/
-    @ApiOperation(value = "当前用户",notes = "获取用户列表(提供给其他服务)",httpMethod = "POST")
+    @ApiOperation(value = "获取用户列表(提供给其他服务)",notes = "获取用户列表(提供给其他服务)",httpMethod = "POST")
     @PostMapping("/list")
     public BasePageResponse getUserList(@RequestBody PageInfo pageInfo) {
 
@@ -64,6 +67,7 @@ public class EcommerceUserController {
      * @param mobile: 手机号
      * @return: com.imooc.ecommerce.vo.BasePageResponse
      **/
+    @ApiOperation(value = "通过手机号查询用户",httpMethod = "GET")
     @GetMapping("/userbymobile")
     public UserInfoResponse getUserByMobile(@RequestParam(value = "mobile") String mobile) {
         List<EcommerceUser> list = new ArrayList<>();
@@ -76,7 +80,8 @@ public class EcommerceUserController {
 
         EcommerceUser user = list.get(0);
         UserInfoResponse userInfoResponse = new UserInfoResponse();
-        UserToResponse(userInfoResponse, user);
+
+        BeanUtils.copyProperties(user,userInfoResponse);
 
         return userInfoResponse;
     }
@@ -88,26 +93,30 @@ public class EcommerceUserController {
      * @param id: 手机号
      * @return: com.imooc.ecommerce.vo.BasePageResponse
      **/
+    @ApiOperation(value = "通过Id查询用户",httpMethod = "GET")
     @GetMapping("/userbyid")
     public UserInfoResponse getUserById(@RequestParam("id") String id) {
 
         UserInfoResponse userInfoResponse = new UserInfoResponse();
         if (StringUtils.isNotBlank(id)) {
             EcommerceUser user = iUserService.getById(id);
-            UserToResponse(userInfoResponse, user);
+            BeanUtils.copyProperties(user,userInfoResponse);
         }
         return userInfoResponse;
     }
 
     /**
      * @Description: 创建用户(提供给其他服务)
-     * @Author: yanfk
+     * @Author: yfk
      * @Date:
      * @param createUserDTO: 分页信息
      * @return: com.imooc.ecommerce.vo.BasePageResponse
      **/
+    @IgnoreResponseAdvice
+    @ApiOperation(value = "创建用户(提供给其他服务)",httpMethod = "POST")
     @PostMapping("/createuser")
     public UserInfoResponse saveUser(@RequestBody CreateUserDTO createUserDTO) {
+
         UserInfoResponse userInfo = new UserInfoResponse();
         if (createUserDTO != null) {
             userInfo = iUserService.createUser(createUserDTO);
@@ -116,15 +125,4 @@ public class EcommerceUserController {
         return userInfo;
     }
 
-    private void UserToResponse(UserInfoResponse userInfoResponse, EcommerceUser user) {
-        if (user != null) {
-            userInfoResponse.setMobile(user.getMobile());
-            userInfoResponse.setBirthday(user.getBirthday());
-            userInfoResponse.setGender(user.getGender());
-            userInfoResponse.setNickName(user.getNickName());
-            userInfoResponse.setId(user.getId());
-            userInfoResponse.setPassword(user.getPassword());
-            userInfoResponse.setRole(user.getRole());
-        }
-    }
 }

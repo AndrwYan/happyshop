@@ -48,7 +48,7 @@ public class OrderShoppingCartServiceImpl extends ServiceImpl<OrderShoppingCartM
                     return shopCartInfoDTO;
                 }).collect(Collectors.toList());
 
-        return new CommonListResponse( shopCartInfoDTOS.size(),shopCartInfoDTOS);
+        return new CommonListResponse(shopCartInfoDTOS.size(),shopCartInfoDTOS);
     }
 
     /**

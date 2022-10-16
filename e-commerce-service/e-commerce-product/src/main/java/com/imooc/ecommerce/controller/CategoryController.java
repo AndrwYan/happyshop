@@ -8,6 +8,8 @@ import com.imooc.ecommerce.service.ICategoryService;
 import com.imooc.ecommerce.vo.CategoryInfoVO;
 import com.imooc.ecommerce.vo.CategoryListVO;
 import com.imooc.ecommerce.vo.CategoryVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
  * @author yfk
  * @since 2022-05-28
  */
+@Api
 @Controller
 @RequestMapping("/category")
 public class CategoryController {
@@ -35,6 +38,7 @@ public class CategoryController {
      * @Date: 2022-06-10
      * @return: List<CategoryVO>
      **/
+    @ApiOperation(value = "获取商品分类，返回分类层级给前端调用")
     @GetMapping(value = "/categoryTree")
     public List<CategoryVO> getAllCategoryList(){
         List<CategoryVO> categoryVOS = iCategoryService.listWithTree();
@@ -47,6 +51,7 @@ public class CategoryController {
      * @Date: 2022-06-10
      * @return: com.imooc.ecommerce.vo.CategoryListVO
      **/
+    @ApiOperation(value = "通过CategoryListVO的id属性去获取这个商品分类下的子商品")
     @PostMapping(value = "/subcategory")
     public List<CategoryVO> getSubCategory(@RequestBody @Validated CategoryListVO categoryListVO) {
         //获取整个商品分类的层级树
@@ -64,6 +69,7 @@ public class CategoryController {
      * @Author: yfk
      * @Date: 2022-06-10
      **/
+    @ApiOperation(value = "创建商品分类")
     @PostMapping(value = "/createcategory")
     public boolean CreateCategory(@RequestBody @Validated CategoryInfoVO categoryInfoVO) {
         //如果没有父类目
@@ -80,6 +86,7 @@ public class CategoryController {
      * @Author: yfk
      * @Date: 2022-06-10
      **/
+    @ApiOperation(value = "删除该商品分类")
     @GetMapping(value = "/deletecategory")
     public boolean deleteCategory(@RequestBody @Validated DeleteCategoryRequest deleteCategoryRequest) {
 
@@ -96,6 +103,7 @@ public class CategoryController {
      * @Author: yfk
      * @Date: 2022-06-10
      **/
+    @ApiOperation(value = "更新该商品分类信息")
     @PostMapping (value = "/updatecategory")
     public boolean updateCategory(@RequestBody @Validated CategoryInfoVO categoryInfoVO) {
         Category result = iCategoryService.getById(categoryInfoVO.getId());

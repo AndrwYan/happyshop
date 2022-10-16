@@ -68,6 +68,7 @@ public class PredicateTest {
 
         Predicate<String> letterStartWith = s -> s.startsWith("gate");
         MICRO_SERVICE.stream().filter(letterStartWith.negate()).forEach(System.out::println);
+
     }
 
     /**

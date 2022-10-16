@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 /**
- * <h1>Web Mvc 配置</h1>
+ * <h1>Web Mvc 配置:服务之间的校验关系</h1>
  * */
 @Configuration
 public class ImoocWebMvcConfig extends WebMvcConfigurationSupport {
@@ -35,9 +35,9 @@ public class ImoocWebMvcConfig extends WebMvcConfigurationSupport {
 
         registry.addResourceHandler("/**").
                 addResourceLocations("classpath:/static/");
-        registry.addResourceHandler("swagger-ui.html")
+        registry.addResourceHandler("swagger-ui.html")//原生的页面
                 .addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("doc.html")
+        registry.addResourceHandler("doc.html")//优化之后的页面
                 .addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
