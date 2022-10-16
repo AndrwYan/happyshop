@@ -23,6 +23,7 @@ import com.imooc.ecommerce.request.OrderRequest;
 import com.imooc.ecommerce.service.IOrderInfoService;
 import com.imooc.ecommerce.util.OrderIdUtil;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -36,6 +37,7 @@ import java.util.stream.Collectors;
  * @since 2022-08-14
  */
 @Service
+@Component
 public class OrderInfoServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo> implements IOrderInfoService {
 
     private final OrderGoodsMapper orderGoodsMapper;

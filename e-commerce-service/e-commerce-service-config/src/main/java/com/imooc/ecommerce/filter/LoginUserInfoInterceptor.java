@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class LoginUserInfoInterceptor implements HandlerInterceptor {
 
-
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) throws Exception {
@@ -79,7 +78,7 @@ public class LoginUserInfoInterceptor implements HandlerInterceptor {
         return StringUtils.containsAny(
                 url,
                 "springfox", "swagger", "v2",
-                "webjars", "doc.html","createuser"
+                "webjars", "doc.html","/ecommerce-user-service/ecommerceUser/createuser"
         );
     }
 }

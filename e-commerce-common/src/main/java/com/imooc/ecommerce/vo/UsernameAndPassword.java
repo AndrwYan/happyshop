@@ -9,7 +9,7 @@ import lombok.Data;
 public class UsernameAndPassword {
 
     /** 用户名 */
-    private String nickName;
+    private String nickname;
 
     /** 电话号码 */
     private String mobile;

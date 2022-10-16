@@ -25,5 +25,5 @@ public interface UserServiceClient {
             value = "/ecommerce-user-service/ecommerceUser/createuser",
             method = RequestMethod.POST
     )
-    UserInfoResponse getInfoByUserService(@RequestBody CreateUserDTO createUserDTO);
+    UserInfoResponse createInfoByUserService(@RequestBody CreateUserDTO createUserDTO);
 }

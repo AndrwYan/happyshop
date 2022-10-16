@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 @Data
 public class UserInfoResponse {
 
-        private int id;
+        private Long id;
 
         private String password;
 
