@@ -1,19 +1,25 @@
 package com.imooc.ecommerce.controller;
 
+import cn.hutool.extra.tokenizer.Result;
 import com.alibaba.fastjson.JSON;
 import com.imooc.ecommerce.dto.CaptchaIdDTO;
 import com.imooc.ecommerce.service.IJWTService;
 
+import com.imooc.ecommerce.service.MsmService;
+import com.imooc.ecommerce.util.RandomUtil;
 import com.imooc.ecommerce.util.RedisUtil;
+import com.imooc.ecommerce.vo.CommonResponse;
 import com.imooc.ecommerce.vo.LoginOrRegisterResponse;
+import com.imooc.ecommerce.vo.SmsVO;
 import com.imooc.ecommerce.vo.UsernameAndPassword;
-import com.wf.captcha.ArithmeticCaptcha;
 import com.wf.captcha.SpecCaptcha;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.annotation.Validated;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -28,9 +34,12 @@ public class AuthorityController {
 
     private final RedisUtil redisUtil;
 
-    public AuthorityController(IJWTService ijwtService, RedisUtil redisUtil) {
+    private final MsmService msmService;
+
+    public AuthorityController(IJWTService ijwtService, RedisUtil redisUtil, MsmService msmService) {
         this.ijwtService = ijwtService;
         this.redisUtil = redisUtil;
+        this.msmService = msmService;
     }
 
     /**
@@ -85,6 +94,40 @@ public class AuthorityController {
             e.printStackTrace();
         }
         return new CaptchaIdDTO(key,specCaptcha.toBase64());
+    }
+
+    @PostMapping("send")
+    public CommonResponse sendMsm(@RequestBody @Valid SmsVO smsVO) {
+
+        CommonResponse<String> objectCommonResponse = new CommonResponse<>();
+        String phone = smsVO.getPhone();
+
+        //1 从redis获取验证码，如果获取到直接返回
+        String code = (String) redisUtil.get(phone);
+
+        if (!StringUtils.isEmpty(code)) {
+            objectCommonResponse.setMessage("发送成功!");
+            return objectCommonResponse;
+        }
+
+        //2 如果redis获取不到,进行阿里云发送
+        //生成随机值，传递阿里云进行发送
+        code = RandomUtil.getFourBitRandom();
+        Map<String,Object> param = new HashMap<>();
+        param.put("code",code);
+        //调用service发送短信的方法
+        boolean isSend = msmService.send(param,phone);
+        if (isSend) {
+            //发送成功，把发送成功验证码放到redis里面
+            //设置有效时间
+            redisUtil.set(smsVO.getPhone(),code,60);
+            objectCommonResponse.setMessage("发送成功!");
+        } else {
+            objectCommonResponse.setMessage("发送失败!");
+        }
+
+        return objectCommonResponse;
+
     }
 
 }
