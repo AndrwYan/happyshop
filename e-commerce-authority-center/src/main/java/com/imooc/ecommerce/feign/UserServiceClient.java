@@ -2,6 +2,7 @@ package com.imooc.ecommerce.feign;
 
 import com.imooc.ecommerce.dto.CreateUserDTO;
 import com.imooc.ecommerce.dto.UserInfoResponse;
+import com.imooc.ecommerce.vo.CommonResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,5 +26,5 @@ public interface UserServiceClient {
             value = "/ecommerce-user-service/ecommerceUser/createuser",
             method = RequestMethod.POST
     )
-    UserInfoResponse createInfoByUserService(@RequestBody CreateUserDTO createUserDTO);
+    CommonResponse createInfoByUserService(@RequestBody CreateUserDTO createUserDTO);
 }

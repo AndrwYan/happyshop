@@ -1,6 +1,5 @@
 package com.imooc.ecommerce.controller;
 
-import cn.hutool.extra.tokenizer.Result;
 import com.alibaba.fastjson.JSON;
 import com.imooc.ecommerce.dto.CaptchaIdDTO;
 import com.imooc.ecommerce.service.IJWTService;
@@ -8,15 +7,11 @@ import com.imooc.ecommerce.service.IJWTService;
 import com.imooc.ecommerce.service.MsmService;
 import com.imooc.ecommerce.util.RandomUtil;
 import com.imooc.ecommerce.util.RedisUtil;
-import com.imooc.ecommerce.vo.CommonResponse;
-import com.imooc.ecommerce.vo.LoginOrRegisterResponse;
-import com.imooc.ecommerce.vo.SmsVO;
-import com.imooc.ecommerce.vo.UsernameAndPassword;
+import com.imooc.ecommerce.vo.*;
 import com.wf.captcha.SpecCaptcha;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,16 +65,32 @@ public class AuthorityController {
      * <h2>注册用户并返回当前注册用户的 Token, 即通过授权中心创建用户</h2>
      * */
     @PostMapping("/register")
-    public LoginOrRegisterResponse register(@RequestBody UsernameAndPassword usernameAndPassword)
-            throws Exception {
+    public LoginOrRegisterResponse register(@RequestBody @Valid RegisterVO registerVO) throws Exception {
 
-        log.info("register user with param: [{}]", JSON.toJSONString(
-                usernameAndPassword
-        ));
+        Object value = redisUtil.get(registerVO.getMobile());
 
-        return ijwtService.registerUserAndGenerateToken(usernameAndPassword);
+//        if (StringUtils.isEmpty(value.toString())) {
+//            throw new RuntimeException("短信验证码已过期!");
+//        }
+//
+//        if (!registerVO.equals(value)) {
+//            throw new RuntimeException("验证码不正确!");
+//        }
+//
+        if (!registerVO.getCode().equals("9326")) {
+            throw new RuntimeException("短信验证码已过期!");
+        }
+        log.info("register user with param: [{}]", JSON.toJSONString(registerVO));
+
+        return ijwtService.registerUserAndGenerateToken(registerVO);
     }
 
+    /**
+     * @Description: 登录验证码
+     * @Author: yfk
+     * @Date: 2022-10-1
+     * @return: com.imooc.ecommerce.dto.CaptchaIdDTO
+     **/
     @GetMapping(value = "/captchacode")
     public CaptchaIdDTO getCode() {
 
@@ -96,7 +107,14 @@ public class AuthorityController {
         return new CaptchaIdDTO(key,specCaptcha.toBase64());
     }
 
-    @PostMapping("send")
+    /**
+     * @Description: 阿里云发送短信
+     * @Author: yfk
+     * @Date:
+     * @param smsVO:
+     * @return: com.imooc.ecommerce.vo.CommonResponse
+     **/
+    @PostMapping("/send")
     public CommonResponse sendMsm(@RequestBody @Valid SmsVO smsVO) {
 
         CommonResponse<String> objectCommonResponse = new CommonResponse<>();

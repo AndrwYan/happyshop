@@ -14,4 +14,6 @@ public interface EcommerceUserDao extends JpaRepository<EcommerceUser, Long> {
      * */
     EcommerceUser findByNickName(String username);
 
+    EcommerceUser findByMobile(String mobile);
+
 }
