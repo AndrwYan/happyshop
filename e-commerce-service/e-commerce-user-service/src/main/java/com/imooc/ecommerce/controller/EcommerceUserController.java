@@ -17,6 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.io.ObjectStreamField;
 import java.util.ArrayList;
 import java.util.List;
@@ -108,20 +109,18 @@ public class EcommerceUserController {
     /**
      * @Description: 创建用户(提供给其他服务)
      * @Author: yfk
-     * @Date:
+     * @Date: 2022-10-12
      * @param createUserDTO: 分页信息
      * @return: com.imooc.ecommerce.vo.BasePageResponse
      **/
-    @IgnoreResponseAdvice
     @ApiOperation(value = "创建用户(提供给其他服务)",httpMethod = "POST")
     @PostMapping("/createuser")
-    public UserInfoResponse saveUser(@RequestBody CreateUserDTO createUserDTO) {
+    public UserInfoResponse saveUser(@RequestBody @Valid CreateUserDTO createUserDTO) {
 
         UserInfoResponse userInfo = new UserInfoResponse();
         if (createUserDTO != null) {
             userInfo = iUserService.createUser(createUserDTO);
         }
-
         return userInfo;
     }
 

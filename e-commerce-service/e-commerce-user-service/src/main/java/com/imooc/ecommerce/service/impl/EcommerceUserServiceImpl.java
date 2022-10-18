@@ -11,6 +11,7 @@ import com.imooc.ecommerce.service.IEcommerceUserService;
 import com.imooc.ecommerce.util.SecurityUtils;
 import com.imooc.ecommerce.vo.UserInfoResponse;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author yfk
@@ -36,7 +37,7 @@ public class EcommerceUserServiceImpl extends ServiceImpl<EcommerceUserMapper, E
         EcommerceUser one = getOne(queryWrapper);
 
         if (one != null) {
-            throw new BaseException("该用户已经存在!");
+            throw new BaseException("该用户已经注册!");
         }
 
         EcommerceUser ecommerceUser = new EcommerceUser();
@@ -47,7 +48,7 @@ public class EcommerceUserServiceImpl extends ServiceImpl<EcommerceUserMapper, E
         ecommerceUser.setPassword(encodePassword);
 
         if (!this.save(ecommerceUser)){
-            throw new BaseException("创建用户失败");
+            throw new BaseException("创建用户失败!");
         }
 
         UserInfoResponse userInfoResponse = new UserInfoResponse();

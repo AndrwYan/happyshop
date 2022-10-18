@@ -1,6 +1,8 @@
 package com.imooc.ecommerce.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.imooc.ecommerce.constant.AuthorityConstant;
 import com.imooc.ecommerce.constant.CommonConstant;
 import com.imooc.ecommerce.dao.EcommerceUserDao;
@@ -10,9 +12,7 @@ import com.imooc.ecommerce.entity.EcommerceUser;
 import com.imooc.ecommerce.feign.UserServiceClient;
 import com.imooc.ecommerce.service.IJWTService;
 import com.imooc.ecommerce.util.SecurityUtils;
-import com.imooc.ecommerce.vo.LoginOrRegisterResponse;
-import com.imooc.ecommerce.vo.LoginUserInfo;
-import com.imooc.ecommerce.vo.UsernameAndPassword;
+import com.imooc.ecommerce.vo.*;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
@@ -81,32 +81,29 @@ public class JWTServiceImpl implements IJWTService {
     }
 
     @Override
-    public LoginOrRegisterResponse registerUserAndGenerateToken(UsernameAndPassword usernameAndPassword)
-            throws Exception {
+    public LoginOrRegisterResponse registerUserAndGenerateToken(RegisterVO registerVO) throws Exception {
 
         CreateUserDTO createUserDTO = new CreateUserDTO();
-        BeanUtils.copyProperties(usernameAndPassword,createUserDTO);
+        createUserDTO.setNickName(registerVO.getMobile());
+        createUserDTO.setMobile(registerVO.getMobile());
+        createUserDTO.setPassword(registerVO.getPassword());
 
-        // 首先需要验证用户是否能够通过授权校验, 即输入的用户名和密码能否匹配数据表记录
-        EcommerceUser ecommerceUser = ecommerceUserDao.findByNickName(
-                usernameAndPassword.getNickname()
-        );
+        //1.Feign接口调用用户服务接口
+        CommonResponse userInfo = userServiceClient.createInfoByUserService(createUserDTO);
+        UserInfoResponse userInfoResponse;
 
-        if (null != ecommerceUser) {
-            log.error("the nickname have been register find user: [{}]", usernameAndPassword.getNickname());
-            throw new RuntimeException("用户名或者密码不存在！");
+        //2.如果code为-1，这里可以自己定义一套异常的规则。则说明用户服务抛异常了，创建失败，这个feign接口用了统一异常处理,异常中塞入用户服务报的异常信息。
+        if (userInfo.getCode() == -1) {
+            throw new RuntimeException(userInfo.getData().toString());
+        }else {
 
+            //必须这样写，不然的话，会报not match的错
+            String jsonString = JSONArray.toJSONString(userInfo.getData());
+            userInfoResponse = JSONObject.parseObject(jsonString, UserInfoResponse.class);
         }
-
-        //rpc接口调用创建用户的接口
-        UserInfoResponse user = userServiceClient.createInfoByUserService(createUserDTO);
-
-        if (null != user) {
-            log.error("username is registered: [{}]", user.getNickName());
-        }
-
-        LoginUserInfo loginUserInfo = new LoginUserInfo(user.getId(),user.getNickName());
+        LoginUserInfo loginUserInfo = new LoginUserInfo(userInfoResponse.getId(),userInfoResponse.getNickName());
         LoginOrRegisterResponse userResponse = createToken(loginUserInfo, 0);
+
         return userResponse;
     }
 

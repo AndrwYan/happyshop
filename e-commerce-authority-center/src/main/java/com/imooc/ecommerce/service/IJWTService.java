@@ -1,7 +1,7 @@
 package com.imooc.ecommerce.service;
 
 import com.imooc.ecommerce.vo.LoginOrRegisterResponse;
-import com.imooc.ecommerce.vo.UsernameAndPassword;
+import com.imooc.ecommerce.vo.RegisterVO;
 
 /**
  * <h1>JWT 相关服务接口定义</h1>
@@ -21,6 +21,6 @@ public interface IJWTService {
     /**
      * <h2>注册用户并生成 Token 返回</h2>
      * */
-    LoginOrRegisterResponse registerUserAndGenerateToken(UsernameAndPassword usernameAndPassword)
+    LoginOrRegisterResponse registerUserAndGenerateToken(RegisterVO registerVO)
             throws Exception;
 }
